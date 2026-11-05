@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  sniffer-node:
+    build: .
+    container_name: sniffer_node
+    command: python3 menu.py
+    tty: true
+    stdin_open: true
+    cap_add:
+      - NET_RAW
+      - NET_ADMIN
+    volumes:
+      - ./:/app
+    networks:
+      - lab-net
+
+  attacker-node:
+    build: .
+    container_name: attacker_node
+    tty: true
+    stdin_open: true
+    cap_add:
+      - NET_RAW
+      - NET_ADMIN
+    volumes:
+      - ./:/app
+    networks:
+      - lab-net
+
+  target-node:
+    build: .
+    container_name: target_node
+    tty: true
+    stdin_open: true
+    cap_add:
+      - NET_RAW
+      - NET_ADMIN
+    volumes:
+      - ./:/app
+    networks:
+      - lab-net
+
+networks:
+  lab-net:
+    driver: bridge
