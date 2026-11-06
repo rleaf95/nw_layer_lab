@@ -1,6 +1,6 @@
 import socket
 import subprocess
-from 01_packet_sniffer.sniffer import run_packet_sniffer
+from packet_sniffer.sniffer import run_packet_sniffer
 
 def get_my_mac(ifname="eth0"):
   try:
@@ -44,7 +44,7 @@ def main():
     print(f" [{node['name']:<8}] IP: {node['ip']:<12} | MAC: {node['mac']}")
   print("==================================================")
 
-  print('Launching the sniffer.....')
+  run_packet_sniffer()
 
 
 if __name__ == "__main__":
