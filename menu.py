@@ -10,13 +10,13 @@ def get_my_mac(ifname="eth0"):
     return "Unknown"
 
 sniffer_ip = socket.gethostbyname('sniffer-node')
-attacker_ip = socket.gethostbyname('attacker-node')
-target_ip = socket.gethostbyname('target-node')
+client_ip = socket.gethostbyname('client-node')
+server_ip = socket.gethostbyname('server-node')
 
 ip_list = [
   {'name': 'sniffer', 'ip': sniffer_ip, 'mac': get_my_mac("eth0")},
-  {'name': 'attacker', 'ip': attacker_ip, 'mac': 'Unknown'},
-  {'name': 'target', 'ip': target_ip, 'mac': 'Unknown'}
+  {'name': 'client', 'ip': client_ip, 'mac': 'Unknown'},
+  {'name': 'server', 'ip': server_ip, 'mac': 'Unknown'}
 ]
 
 def get_arp_table():

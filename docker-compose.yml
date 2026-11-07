@@ -1,36 +1,48 @@
 version: '3.8'
 
 services:
+  client-node:
+    build: .
+    container_name: client_node
+    tty: true
+    stdin_open: true
+    cap_add:
+      - NET_RAW
+      - NET_ADMIN
+    volumes:
+      - ./:/app
+    networks:
+      - lab-net
+    command: >
+      bash -c "
+        iptables -A OUTPUT -p tcp --tcp-flags RST RST -j DROP &&
+        echo 'RST drop rule applied successfully!' &&
+        tail -f /dev/null
+      "
+
+  server-node:
+    build: .
+    container_name: server_node
+    tty: true
+    stdin_open: true
+    cap_add:
+      - NET_RAW
+      - NET_ADMIN
+    volumes:
+      - ./:/app
+    networks:
+      - lab-net
+    command: >
+      bash -c "
+        iptables -A OUTPUT -p tcp --tcp-flags RST RST -j DROP &&
+        echo 'Server RST drop rule applied!' &&
+        tail -f /dev/null
+      "
+      
   sniffer-node:
     build: .
     container_name: sniffer_node
     command: python3 menu.py
-    tty: true
-    stdin_open: true
-    cap_add:
-      - NET_RAW
-      - NET_ADMIN
-    volumes:
-      - ./:/app
-    networks:
-      - lab-net
-
-  attacker-node:
-    build: .
-    container_name: attacker_node
-    tty: true
-    stdin_open: true
-    cap_add:
-      - NET_RAW
-      - NET_ADMIN
-    volumes:
-      - ./:/app
-    networks:
-      - lab-net
-
-  target-node:
-    build: .
-    container_name: target_node
     tty: true
     stdin_open: true
     cap_add:
