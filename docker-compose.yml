@@ -42,7 +42,6 @@ services:
   sniffer-node:
     build: .
     container_name: sniffer_node
-    command: python3 menu.py
     tty: true
     stdin_open: true
     cap_add:
@@ -53,6 +52,14 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - lab-net
+    command: >
+      sh -c "
+        iptables -A OUTPUT -p tcp --tcp-flags RST RST -j DROP &&
+        echo 'Server RST drop rule applied!' &&
+        python3 menu.py
+      "
+
+   
 
 networks:
   lab-net:

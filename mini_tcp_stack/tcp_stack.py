@@ -1,15 +1,18 @@
-
-import struct, socket, sys
+import struct, socket, sys, subprocess
 from telnetlib import IP
+from scapy.all import srp, Ether, ARP, conf
 
-def get_checksum(psh):
-  s = 0
-  for i in range(0, len(psh), 2):
-    w = (psh[i] << 8) + (psh[i+1] if i + 1 < len(psh) else 0)
-    s += w
-  while s >> 16:
-    s = (s & 0xffff) + (s >> 16)  
-  return ~s & 0xffff
+INTERFACE = sys.argv[1] if len(sys.argv) > 1 else "eth0"
+
+def send_broadcast(dest_ip, dest_port=80):
+  sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+  try:
+    sock.sendto(b'Hello', (dest_ip, dest_port))
+  except Exception as e:
+    print(f"[-] Failed to trigger ARP: {e}")
+  finally:
+    sock.close()
+
 
 def get_dst_mac(target_ip):
   try:
@@ -22,6 +25,12 @@ def get_dst_mac(target_ip):
             mac = parts[3]
             if ip == target_ip and mac != "00:00:00:00:00:00":
               return bytes.fromhex(mac.replace(':', ''))
+    mac = send_broadcast(target_ip)
+    print(mac)
+    if mac and mac != "00:00:00:00:00:00":
+      return bytes.fromhex(mac.replace(':', ''))
+    
+          
   except Exception as e:
       print(f"Failed to read ARP table: {e}")
   return None
@@ -34,15 +43,23 @@ def get_my_mac(interface="eth0"):
   except Exception as e:
     print(f"Failed to get my MAC/ file name: {interface}:{e}")
 
+
+def get_checksum(psh):
+  s = 0
+  for i in range(0, len(psh), 2):
+    w = (psh[i] << 8) + (psh[i+1] if i + 1 < len(psh) else 0)
+    s += w
+  while s >> 16:
+    s = (s & 0xffff) + (s >> 16)  
+  return ~s & 0xffff
+
 def create_packet(src_ip, dst_ip, src_port, dst_port, seq_num):
   # ==========================  
   # Create Ethernet layer
   # ==========================
-  src_mac = get_my_mac()
+  src_mac = get_my_mac(INTERFACE)
   dst_mac = get_dst_mac(dst_ip)
   eth_proto = b'\x08\x00'
-
-  print(dst_mac, src_mac , eth_proto)
   eth_header = dst_mac + src_mac + eth_proto
 
   # ==========================
@@ -90,7 +107,6 @@ def create_packet(src_ip, dst_ip, src_port, dst_port, seq_num):
   placeholder = 0
   protocol = 6
   tcp_length = len(tcp_header_no_checksum)
-  print(f'tcp_length: {tcp_length}')
   pseudo_header = struct.pack('!4s4sBBH', source_ip, dest_ip, placeholder, protocol, tcp_length)  
   psh = pseudo_header + tcp_header_no_checksum  
   tcp_check = get_checksum(psh)
@@ -125,7 +141,7 @@ def main():
 
   packet = create_packet(src_ip, dst_ip, src_port, dst_port, seq_num)
 
-  s.sendto(packet, ('eth0', 0))
+  s.sendto(packet, (INTERFACE, 0))
   print("[+] SYN packet sent successfully!")
 
 if __name__ == "__main__":
