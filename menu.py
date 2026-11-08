@@ -1,7 +1,7 @@
 import socket, subprocess, threading, docker
 from packet_sniffer.sniffer import run_packet_sniffer
 from spoofer.arp_spoof import run_spoofer
-from mini_tcp_stack.tcp_stack import main
+from client.tcp_stack import main
 
 interface = 'eth0'
 
@@ -54,7 +54,7 @@ client = docker.from_env()
 def send_syn_packet():
   try:
     container = client.containers.get("client_node")
-    exec_log = container.exec_run(f"python3 /app/mini_tcp_stack/tcp_stack.py {interface}")
+    exec_log = container.exec_run(f"python3 /app/client/tcp_stack.py {interface}")
     return exec_log
   except Exception as e:
     print(f"[-] Error executing command: {e}")
@@ -75,11 +75,10 @@ def main():
   subprocess.run(["ping", "-c", "1", "-W", "1", ip_list[1]['ip']], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
   subprocess.run(["ping", "-c", "1", "-W", "1", ip_list[2]['ip']], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
   get_print_info()
-  sniffer_thread = threading.Thread(target=run_packet_sniffer, daemon=True)
+  sniffer_thread = threading.Thread(target=run_packet_sniffer, args=(interface, get_my_mac(interface),), daemon=True)
   sniffer_thread.start()
 
   print("[*] Packet sniffer started in the background.")
-  print(ip_list)
   while True:
     print("[1]: Perform 3-way handshake")
     print("[2]: Start ARP poisoner")

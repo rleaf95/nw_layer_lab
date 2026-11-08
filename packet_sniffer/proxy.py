@@ -1,0 +1,28 @@
+from scapy.all import Ether, IP, TCP, sendp
+
+def handle_syn_ack(dst_mac, src_mac, ip_info, transport_info, interface):
+  client_ip = ip_info['Source IP']
+  client_mac = dst_mac
+  client_port = transport_info['Source Port']
+  client_seq = transport_info["Sequence Number"]
+  my_mac =  src_mac
+  server_port = transport_info["Destination Port"]
+  server_ip = ip_info['Destination IP']
+  
+  print(f"[+] Caught SYN from {client_ip}:{client_port}")
+  my_isn = 1000
+  
+  ether = Ether(dst=client_mac, src=my_mac)
+  ip = IP(dst=client_ip, src=server_ip)
+  tcp = TCP(
+    sport=server_port,
+    dport=client_port,
+    flags="SA",
+    seq=my_isn,
+    ack=client_seq + 1,
+    window=64240
+  )
+  
+  syn_ack_packet = ether / ip / tcp
+  sendp(syn_ack_packet, iface=interface, verbose=False)
+  print(f"[+] Sent SYN-ACK to {client_ip}:{client_port}")

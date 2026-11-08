@@ -1,6 +1,7 @@
 import socket, struct, datetime
+from packet_sniffer.proxy import handle_syn_ack
 
-def convert_to_mac(byte, Mac=True):
+def convert_to_mac(byte):
   return ':'.join(format(b, '02x') for b in byte)
 
 def ethernet_header(packet):
@@ -140,7 +141,7 @@ def log_packet(message):
   with open("sniffer.log", "a") as f:
     f.write(log_line)
 
-def run_packet_sniffer():
+def run_packet_sniffer(interface, my_mac):
   print("Launching the sniffer.....")
   try:
     raw_socket = socket.socket(socket.AF_PACKET, socket.SOCK_RAW, socket.ntohs(3))
@@ -171,6 +172,8 @@ def run_packet_sniffer():
         transport_info, transport_payload = icmp_message(remaining_packet)
       elif proto_num == 6:  # TCP
         transport_info, transport_payload = tcp_header(remaining_packet)
+        if transport_info['SYN'] == 1 and dest_addr == my_mac:
+          handle_syn_ack(src_addr, dest_addr, ip_info, transport_info, interface)
       elif proto_num == 17: # UDP
         transport_info, transport_payload = udp_header(remaining_packet)
       else:
