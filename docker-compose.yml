@@ -50,6 +50,7 @@ services:
       - NET_ADMIN
     volumes:
       - ./:/app
+      - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - lab-net
 

@@ -1,5 +1,4 @@
-import socket
-import struct
+import socket, struct, datetime
 
 def convert_to_mac(byte, Mac=True):
   return ':'.join(format(b, '02x') for b in byte)
@@ -7,12 +6,10 @@ def convert_to_mac(byte, Mac=True):
 def ethernet_header(packet):
   eth_header = packet[:14]
   eth_header = struct.unpack('!6s6sH', eth_header)
-  # Preamble is removed at the hardware level.
   dest_addr = convert_to_mac(eth_header[0])
   src_addr = convert_to_mac(eth_header[1])
   protocol = eth_header[2]
   remaining_packet = packet[14:]
-
   return dest_addr, src_addr, protocol, remaining_packet
 
 def ipv4_header(packet):
@@ -25,15 +22,16 @@ def ipv4_header(packet):
   checksum = ipv4_header[7]
   src_ip = socket.inet_ntoa(ipv4_header[8])
   dest_ip = socket.inet_ntoa(ipv4_header[9])
+  
   ip_info = {
-    "version": version,
-    "ihl": ihl,
-    "total_length": total_Length,
-    "ttl": ttl,
-    "protocol": protocol,
-    "checksum": checksum,
-    "src_ip": src_ip,
-    "dest_ip": dest_ip
+    "Version": version,
+    "IHL": ihl,
+    "Total length": total_Length,
+    "TTL": ttl,
+    "Protocol": protocol,
+    "Checksum": checksum,
+    "Source IP": src_ip,
+    "Destination IP": dest_ip
   }
   remaining_packet = packet[ihl * 4:]
   return ip_info, remaining_packet
@@ -43,21 +41,19 @@ def arp_header(packet):
   arp_header = struct.unpack('!HHBBH6s4s6s4s', arp_header)
   hardware_type = arp_header[0]
   protocol_type = arp_header[1]
-  hardware_size = arp_header[2] #Lengh of MAC address - 6
-  protocol_size = arp_header[3] #Length of IP address - 4
   opcode = arp_header[4]
   src_mac = convert_to_mac(arp_header[5])
   src_ip = socket.inet_ntoa(arp_header[6])
   dest_mac = convert_to_mac(arp_header[7])
   dest_ip = socket.inet_ntoa(arp_header[8])
   ip_info = {
-    "hardware_type": hardware_type,
-    "protocol_type": protocol_type,
-    "opcode": opcode,
-    "src_mac": src_mac,
-    "src_ip": src_ip,
-    "dest_mac": dest_mac,
-    "dest_ip": dest_ip
+    "Hardware Type": hardware_type,
+    "Protocol": protocol_type,
+    "Opcode": opcode,
+    "Source MACaddress": src_mac,
+    "Source IP": src_ip,
+    "Destination MACaddress": dest_mac,
+    "Destination IP": dest_ip
   }
   remaining_packet = packet[28:]
   return ip_info, remaining_packet
@@ -68,22 +64,20 @@ def icmp_message(packet):
   icmp_type = icmp_header[0]
   code = icmp_header[1]
   checksum = icmp_header[2]
-  rest = icmp_header[3]
   
   if icmp_type == 0:
-    icmp_type = "0: Echo Reply"
+    icmp_type_str = "0: Echo Reply"
   elif icmp_type == 3:
-    icmp_type = "3: Destination Unreachable"
+    icmp_type_str = "3: Destination Unreachable"
   elif icmp_type == 8:
-    icmp_type = "8: Echo Request"
+    icmp_type_str = "8: Echo Request"
   else: 
-    icmp_type = f"{icmp_type}: Unknown ICMP Type"
+    icmp_type_str = f"{icmp_type}: Unknown ICMP Type"
 
-  print(f"ICMP Type: {icmp_type}, Code: {code}, Checksum: {checksum}")
   icmp_info = {
-    "icmp_type": icmp_type,
-    "code": code,
-    "checksum": checksum,
+    "ICMP Type": icmp_type_str,
+    "Code": code,
+    "Checksum": checksum,
   }
   remaining_packet = packet[8:]
   return icmp_info, remaining_packet
@@ -102,7 +96,6 @@ def tcp_header(packet):
   checksum = tcp_header[7]
   urgent_pointer = tcp_header[8]
 
-  # Extract individual flags from the flags byte
   urg_flag = (flags & 0x20) >> 5
   ack_flag = (flags & 0x10) >> 4
   psh_flag = (flags & 0x08) >> 3
@@ -111,45 +104,41 @@ def tcp_header(packet):
   fin_flag = flags & 0x01
 
   tcp_info = {
-    "src_port": src_port,
-    "dest_port": dest_port,
-    "sequence_number": sequence_number,
-    "acknowledgment_number": acknowledgment_number,
-    "data_offset_reserved": data_offset_reserved,
-    "urg_flag": urg_flag,
-    "ack_flag": ack_flag,
-    "psh_flag": psh_flag,
-    "rst_flag": rst_flag,
-    "syn_flag": syn_flag,
-    "fin_flag": fin_flag,
-    "window_size": window_size,
-    "checksum": checksum,
-    "urgent_pointer": urgent_pointer
+    "Source Port": src_port,
+    "Destination Port": dest_port,
+    "Sequence Number": sequence_number,
+    "Acknowledgment Number": acknowledgment_number,
+    "SYN": syn_flag,
+    "ACK": ack_flag,
+    "FIN": fin_flag,
+    "RST": rst_flag,
+    "URG": urg_flag,
+    "PSH": psh_flag,
+    "Window Size": window_size,
+    "Checksum": checksum
   }
   
-  remaining_packet = packet[(data_offset_reserved >> 4) * 4:]
-  
+  data_offset = (data_offset_reserved >> 4) * 4
+  remaining_packet = packet[data_offset:]
   return tcp_info, remaining_packet
 
 def udp_header(packet):
   udp_header = packet[:8]
   udp_header = struct.unpack('!HHHH', udp_header)
-
-  src_port = udp_header[0]
-  dest_port = udp_header[1]
-  length = udp_header[2]
-  checksum = udp_header[3]
-
   udp_info = {
-    "src_port": src_port,
-    "dest_port": dest_port,
-    "length": length,
-    "checksum": checksum
+    "Source Port": udp_header[0],
+    "Destination Port": udp_header[1],
+    "Length": udp_header[2],
+    "Checksum": udp_header[3]
   }
-
   remaining_packet = packet[8:]
-
   return udp_info, remaining_packet
+
+def log_packet(message):
+  timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+  log_line = f"[{timestamp}] {message}\n"
+  with open("sniffer.log", "a") as f:
+    f.write(log_line)
 
 def run_packet_sniffer():
   print("Launching the sniffer.....")
@@ -159,53 +148,61 @@ def run_packet_sniffer():
     print("[-] Error: Root privileges are required to open a Raw Socket.")
     return
 
-  print("==================================================")
-  print("     PACKET SNIFFER ACTIVE                        ")
-  print("==================================================")
-
   while True:
-    print("==================================================\n")
     packet, _ = raw_socket.recvfrom(65565)
-    print(f"Packet received: {packet}")
 
-    # Extract Ethernet header information
+    ip_details = ""
+    transport_detail = ""
+    transport_payload = b""
+    readable_text = ""
+
     dest_addr, src_addr, protocol, ip_payload = ethernet_header(packet)
-    print(f"Destination Address: {dest_addr}, Source Address: {src_addr}, Protocol: {protocol}")
 
-    # Extract IP header information based on the protocol
-    if protocol == 0x0800:
+    ip_info = None
+    remaining_packet = None
+    
+    if protocol == 0x0800: # IPv4
       ip_info, remaining_packet = ipv4_header(ip_payload)
-    elif protocol == 0x0806:
-      ip_info, remaining_packet = arp_header(ip_payload)
-      print("ARP packet detected.")
-    else:
-      ip_info = None
-      remaining_packet = None
-      print(f"Unknown protocol: {protocol}")
-
-    if ip_info:
       for key, value in ip_info.items():
-        print(f"{key}: {value}")
+        ip_details += f"  {key}: {value}"
 
-    if protocol == 0x0800: # need to add ipv6 later
-      if ip_info.get("protocol") == 1:  #ICMP protocol
-        info, transport_payload = icmp_message(remaining_packet)
-      elif ip_info.get("protocol") == 6:  #TCP protocol
-        info, transport_payload = tcp_header(remaining_packet)
-      elif ip_info.get("protocol") == 17:  #UDP protocol
-        info, transport_payload = udp_header(remaining_packet)
+      proto_num = ip_info.get("Protocol")
+      if proto_num == 1:   # ICMP
+        transport_info, transport_payload = icmp_message(remaining_packet)
+      elif proto_num == 6:  # TCP
+        transport_info, transport_payload = tcp_header(remaining_packet)
+      elif proto_num == 17: # UDP
+        transport_info, transport_payload = udp_header(remaining_packet)
       else:
-        print("Unknown protocol detected.")
+        transport_info = {"Info": f"Other IP Protocol: {proto_num}"}
+        transport_payload = remaining_packet
 
-      if info:
-        for key, value in info.items():
-          print(f"{key}: {value}")
+      for key, value in transport_info.items():
+        transport_detail += f"  {key}: {value}"
 
-        if len(transport_payload) > 0:
-          print(f"--- Payload (Length: {len(transport_payload)} bytes) ---")
-          try:
-            readable_text = transport_payload.decode('utf-8', errors='ignore')
-            print(f'Readable Text: {readable_text.strip()}')
-          except Exception as e:
-              print("(Binary Data)")
-          print('\n')
+    elif protocol == 0x0806: # ARP
+      ip_info, remaining_packet = arp_header(ip_payload)
+      for key, value in ip_info.items():
+        ip_details += f"  {key}: {value}"
+      transport_detail = " ARP Packet (No Transport Layer)"
+    else:
+      ip_details = f"  Unknown Ethernet Protocol: {hex(protocol)}"
+
+    if len(transport_payload) > 0:
+      try:
+        readable_text = transport_payload.decode('utf-8', errors='ignore')
+      except Exception:
+        readable_text = 'Binary Data'
+
+    message = f"""
+  --- Ethernet Header ---
+    Destination: {dest_addr}, Source: {src_addr}, Protocol: {hex(protocol)}
+  --- IP / Network Header ---
+  {ip_details}
+  --- Transport Header / Details ---
+  {transport_detail}
+  --- Payload (Length: {len(transport_payload)} bytes) ---
+    Readable Text: {readable_text.strip()}
+--------------------------------------------------"""
+
+    log_packet(message)
