@@ -1,36 +1,38 @@
 import socket
-import struct
 
 def main():
-  recv_socket = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_TCP)
+  server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+  server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+  
+  server_socket.bind(('0.0.0.0', 80))
+  server_socket.listen(5)
+  
+  print("[*] サーバーが起動しました。継続して接続を待ち受けます...")
 
-  send_socket = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_RAW)
-  send_socket.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
+  try:
+    while True:
+      client_socket, addr = server_socket.accept()
+      print(f"\n[+] 新しい接続を検知しました: {addr}")
+      try:
+        client_socket.settimeout(10.0)
+        raw_data = client_socket.recv(4096)
+        if raw_data:
+          print("[*] 受け取ったデータ:")
+          print(raw_data.decode('utf-8', errors='ignore'))
+          response = b"HTTP/1.1 200 OK\r\nContent-Length: 2\r\n\r\nOK"
+          client_socket.sendall(response)
+        else:
+          print("[-] クライアント側から接続が切断されました。")
+      except socket.timeout:
+          print("[-] ⚠️ 10秒間通信がなかったため、タイムアウトによりコネクションを強制終了します。")
+      finally:
+        client_socket.close()
+        print("[-] この接続とのやり取りを終了しました。次の接続を待ちます...")
 
-  print("[*] Server is now listening")
+  except KeyboardInterrupt:
+      print("\n[*] サーバーを手動で停止します。")
+  finally:
+      server_socket.close()
 
-  while True:
-    packet, addr = recv_socket.recvfrom(65535)
-    print(f"[*] Received packet from {addr}")
-
-    ip_header = packet[0:20]
-    iph = struct.unpack('!BBHHHBBH4s4s', ip_header)
-    protocol = iph[6]
-    src_ip = socket.inet_ntoa(iph[8])
-    dst_ip = socket.inet_ntoa(iph[9])
-
-    if protocol == 6:  # TCP
-      tcp_header = packet[20:40]
-      tcph = struct.unpack('!HHLLBBHHH', tcp_header)
-      src_port = tcph[0]
-      dst_port = tcph[1]
-      flags = tcph[5]
-
-      syn_flag = (flags & 0x02) >> 1
-      if syn_flag and dst_port == 80:
-        print(f"[*] SYN packet received from {src_ip}:{src_port} to {dst_ip}:{dst_port}")
-        # TODO: Implement SYN-ACK response logic here
-        pass
-
-if __name__ == "__main__":
-  main() 
+if __name__ == '__main__':
+  main()

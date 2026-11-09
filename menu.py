@@ -39,16 +39,24 @@ def get_arp_table():
     print(f"ARP read error: {e}")
 
 server = docker.from_env()
+def stream_server_logs(container):
+  try:
+    exit_code, output_stream = container.exec_run("python3 -u /app/server.py", stream=True)
+    for line in output_stream:
+        decoded_line = line.decode('utf-8', errors='replace').strip()
+        if decoded_line:
+            print(f"[Server] {decoded_line}")
+  except Exception as e:
+      print(f"[-] Stream error: {e}")
 
 def start_surver_listener():
   try:
     container = server.containers.get("server_node")
-    exec_log = container.exec_run("python3 /app/server.py", detach=True)
-    return exec_log
+    log_thread = threading.Thread(target=stream_server_logs, args=(container,), daemon=True)
+    log_thread.start()
   except Exception as e:
-    print(f"[-] Error executing command: {e}")
+      print(f"[-] Error executing command: {e}")
   
-    
 
 client = docker.from_env()
 def send_syn_packet():
@@ -57,10 +65,8 @@ def send_syn_packet():
     exec_log = container.exec_run(f"python3 /app/client/tcp_stack.py {interface}")
     output_str = exec_log.output.decode('utf-8', errors='replace')
     if output_str.strip():
-      print(f"\n========== Client Container Exec Result ==========")
       for line in output_str.splitlines():
-        print(f"[Client Log] {line}")
-      print("===============================================\n")
+        print(f"[Client] {line}")
   except Exception as e:
     print(f"[-] Error executing command: {e}")
 
@@ -82,8 +88,10 @@ def main():
   get_print_info()
   sniffer_thread = threading.Thread(target=run_packet_sniffer, args=(interface, get_my_mac(interface),), daemon=True)
   sniffer_thread.start()
+  start_surver_listener()
+  print("[Sniffer] [*] Sniffer started in the background.")
 
-  print("[*] Packet sniffer started in the background.")
+  time.sleep(1)
   while True:
     print("\n[1]: Perform 3-way handshake")
     print("[2]: Start ARP poisoner")
@@ -91,8 +99,7 @@ def main():
     choice = input("Enter your choice: ")
     print('')
     if choice == '1':
-      log_listener = start_surver_listener()
-      log_sender = send_syn_packet()
+      send_syn_packet()
       time.sleep(0.1)
     elif choice == '2':
       spoofer_thread = threading.Thread(target=run_spoofer, args=(interface, ip_list), daemon=True)

@@ -1,7 +1,6 @@
 import socket, struct, datetime
-from packet_sniffer.proxy import handle_syn_ack
+from packet_sniffer.proxy import handle_syn_ack, connect_to_server
 from shares.packet_dissection import *
-
 
 def log_packet(message, is_tcp):
   timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -14,6 +13,7 @@ def log_packet(message, is_tcp):
 
 
 def run_packet_sniffer(interface, my_mac):
+  my_ip = socket.gethostbyname('sniffer-node')
   try:
     raw_socket = socket.socket(socket.AF_PACKET, socket.SOCK_RAW, socket.ntohs(3))
   except PermissionError:
@@ -43,10 +43,15 @@ def run_packet_sniffer(interface, my_mac):
       if proto_num == 1:   # ICMP
         transport_info, transport_payload = icmp_message(remaining_packet)
       elif proto_num == 6:  # TCP
-        transport_info, transport_payload = tcp_header(remaining_packet)
+        transport_info, transport_payload = parse_tcp_header(remaining_packet)
         is_tcp = True
         if transport_info['SYN'] == 1 and dest_addr == my_mac:
           handle_syn_ack(src_addr, dest_addr, ip_info, transport_info, interface)
+          if ip_info['Destination IP'] != my_ip:
+            server_ip = ip_info['Destination IP']
+            server_port = transport_info['Destination Port']
+            active_server_socket = connect_to_server(server_ip, server_port)
+            print(f'[+] Connection established server - sniffer: {active_server_socket}')
       elif proto_num == 17: # UDP
         transport_info, transport_payload = udp_header(remaining_packet)
       else:
@@ -78,7 +83,7 @@ def run_packet_sniffer(interface, my_mac):
   --- Transport Header / Details ---
   {transport_detail}
   --- Payload (Length: {len(transport_payload)} bytes) ---
-    Readable Text: {readable_text.strip()}
+  {readable_text.strip()}
 --------------------------------------------------"""
 
     log_packet(message, is_tcp)

@@ -1,4 +1,5 @@
 from scapy.all import Ether, IP, TCP, sendp
+import socket, sys
 
 def handle_syn_ack(dst_mac, src_mac, ip_info, transport_info, interface):
   client_ip = ip_info['Source IP']
@@ -26,3 +27,16 @@ def handle_syn_ack(dst_mac, src_mac, ip_info, transport_info, interface):
   syn_ack_packet = ether / ip / tcp
   sendp(syn_ack_packet, iface=interface, verbose=False)
   print(f"[Sniffer Log] [+] Sent SYN-ACK to {client_ip}:{client_port}")
+
+def connect_to_server(server_ip, server_port):
+  server_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+  server_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+  
+  try:
+    server_sock.connect((server_ip, server_port))
+    print(f"[+] 【スニッファー ⇄ サーバー】 標準ソケットでの接続確立に成功しました！")
+    return server_sock
+      
+  except socket.error as e:
+    print(f"[-] サーバーへの接続に失敗しました: {e}")
+    sys.exit(1)

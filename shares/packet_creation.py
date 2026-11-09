@@ -56,12 +56,15 @@ def creat_eth_header(dst_ip, interface):
   # print(f'dst_mac{dst_mac} + src_mac{src_mac}')
   return dst_mac + src_mac + eth_proto
 
-def create_ip_header(src_ip, dst_ip):
+def create_ip_header(src_ip, dst_ip, payload=False):
   version = 4
   ihl = 5
   tos = 0
-  tot_len = 20 + 20
-  id = 12345
+  if payload:
+    tot_len = 20 + 20 + len(payload)
+  else:
+    tot_len = 20 + 20
+  id = 54321
   frag = 0x4000
   ttl = 64
   protocol = 6
@@ -73,12 +76,19 @@ def create_ip_header(src_ip, dst_ip):
   ip_header = struct.pack(
     '!BBHHHBBH4s4s', version_ihl, tos, tot_len, id, frag, ttl, protocol, checksum, src_ip_bytes, dst_ip_bytes
   )
+  actual_checksum = get_checksum(ip_header)
+  ip_header = struct.pack(
+    '!BBHHHBBH4s4s', version_ihl, tos, tot_len, id, frag, ttl, protocol, actual_checksum, src_ip_bytes, dst_ip_bytes
+  )
   return ip_header
 
-def create_tcp_header(src_port, dst_port, seq_num, ack_num, tcp_check=False, ack=False ):
+def create_tcp_header(src_port, dst_port, seq_num, ack_num, tcp_check=False, ack=False, payload=False):
   offset = 5
   reserved = 0
-  flags = 0x10 if ack else 0x02 #syn
+  if payload:
+    flags = 0x18
+  else:
+    flags = 0x10 if ack else 0x02 #syn
   window = socket.htons(5840)
   checksum = 0
   urg_ptr = 0

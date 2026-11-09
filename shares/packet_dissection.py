@@ -84,7 +84,7 @@ def icmp_message(packet):
   return icmp_info, remaining_packet
 
 
-def tcp_header(packet):
+def parse_tcp_header(packet):
   tcp_header = packet[:20]
   tcp_header = struct.unpack('!HHLLBBHHH', tcp_header)
 

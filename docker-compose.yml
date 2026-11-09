@@ -32,13 +32,7 @@ services:
       - ./:/app
     networks:
       - lab-net
-    command: >
-      bash -c "
-        iptables -A OUTPUT -p tcp --tcp-flags RST RST -j DROP &&
-        echo 'Server RST drop rule applied!' &&
-        tail -f /dev/null
-      "
-      
+
   sniffer-node:
     build: .
     container_name: sniffer_node
@@ -52,6 +46,8 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - lab-net
+    sysctls:
+      - net.ipv4.ip_forward=0
     command: >
       sh -c "
         iptables -A OUTPUT -p tcp --tcp-flags RST RST -j DROP &&
