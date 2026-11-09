@@ -9,7 +9,7 @@ def handle_syn_ack(dst_mac, src_mac, ip_info, transport_info, interface):
   server_port = transport_info["Destination Port"]
   server_ip = ip_info['Destination IP']
   
-  print(f"[+] Caught SYN from {client_ip}:{client_port}")
+  print(f"[Sniffer Log] [+] Caught SYN from {client_ip}:{client_port}")
   my_isn = 1000
   
   ether = Ether(dst=client_mac, src=my_mac)
@@ -25,4 +25,4 @@ def handle_syn_ack(dst_mac, src_mac, ip_info, transport_info, interface):
   
   syn_ack_packet = ether / ip / tcp
   sendp(syn_ack_packet, iface=interface, verbose=False)
-  print(f"[+] Sent SYN-ACK to {client_ip}:{client_port}")
+  print(f"[Sniffer Log] [+] Sent SYN-ACK to {client_ip}:{client_port}")

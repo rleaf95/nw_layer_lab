@@ -1,4 +1,4 @@
-import socket, subprocess, threading, docker
+import socket, subprocess, threading, docker, time
 from packet_sniffer.sniffer import run_packet_sniffer
 from spoofer.arp_spoof import run_spoofer
 from client.tcp_stack import main
@@ -55,7 +55,12 @@ def send_syn_packet():
   try:
     container = client.containers.get("client_node")
     exec_log = container.exec_run(f"python3 /app/client/tcp_stack.py {interface}")
-    return exec_log
+    output_str = exec_log.output.decode('utf-8', errors='replace')
+    if output_str.strip():
+      print(f"\n========== Client Container Exec Result ==========")
+      for line in output_str.splitlines():
+        print(f"[Client Log] {line}")
+      print("===============================================\n")
   except Exception as e:
     print(f"[-] Error executing command: {e}")
 
@@ -80,18 +85,22 @@ def main():
 
   print("[*] Packet sniffer started in the background.")
   while True:
-    print("[1]: Perform 3-way handshake")
+    print("\n[1]: Perform 3-way handshake")
     print("[2]: Start ARP poisoner")
     print("[3]: Exit")
     choice = input("Enter your choice: ")
+    print('')
     if choice == '1':
       log_listener = start_surver_listener()
       log_sender = send_syn_packet()
+      time.sleep(0.1)
     elif choice == '2':
       spoofer_thread = threading.Thread(target=run_spoofer, args=(interface, ip_list), daemon=True)
       spoofer_thread.start()
+      time.sleep(0.1)
     elif choice == '3':
       break
+    
 
 if __name__ == "__main__":
   main()
