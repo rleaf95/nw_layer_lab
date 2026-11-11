@@ -6,7 +6,7 @@ logging.basicConfig(
   format="[%(asctime)s] [%(name)s] %(message)s",
   datefmt="%H:%M:%S"
 )
-logger = logging.getLogger('SERVER')
+logger = logging.getLogger('  SERVER  ')
 
 def main():
   server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -41,7 +41,7 @@ def main():
           continue
       finally:
         client_socket.close()
-        logger.info("[-] connection finnished: {addr}")
+        logger.info(f"[-] connection finished: {addr}")
 
   except KeyboardInterrupt:
       print("\n[*] Server is stopped")

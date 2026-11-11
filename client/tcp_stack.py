@@ -11,7 +11,7 @@ logging.basicConfig(
   format="[%(asctime)s] [%(name)s] %(message)s",
   datefmt="%H:%M:%S"
 )
-logger = logging.getLogger('CLIENT')
+logger = logging.getLogger('  CLIENT  ')
 
 INTERFACE = sys.argv[1] if len(sys.argv) > 1 else "eth0"
 
@@ -21,29 +21,27 @@ def control_listener(s, src_ip, dst_ip, src_port, dst_port, seq_num, interface):
     ctrl_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     ctrl_sock.bind(('0.0.0.0', 9999))
     ctrl_sock.listen(1)
-    logger.info("[+] Control listener successfully bound to port 9999 and listening.")
+    logger.info("[+] Control listener bound to port 9999 and listening.")
   except Exception as e:
     logger.error(f"[-] Failed to bind or listen on port 9999: {e}")
     return
   
   while True:
-    logger.info(f"[+] start to send SYN")
     conn, _ = ctrl_sock.accept()
     try:
       data = conn.recv(1024).decode().strip()
       if data == "SEND_SYN":
         packet = create_packet(src_ip, dst_ip, src_port, dst_port, seq_num)
         s.sendto(packet, (interface, 0))
-        logger.info(f"[+] SYN sent successfully to {dst_ip}")
+        logger.info(f"[+] Sent SYN packet to {dst_ip}")
     except Exception as e:
         logger.error(f"[-] Error in control listener: {e}")
     finally:
         conn.close()
 
-
 def create_packet(src_ip, dst_ip, src_port, dst_port, seq_num):
-  
-  eth_header = creat_eth_header(dst_ip, INTERFACE)
+  logger.info(f'[+] Start to create SYN packet - to {dst_ip}')
+  eth_header = creat_eth_header(dst_ip, INTERFACE, logger)
   ip_header = create_ip_header(src_ip, dst_ip)
   ack_num = 0
   tcp_header_no_cks = create_tcp_header(src_port, dst_port, seq_num, ack_num)
@@ -80,6 +78,8 @@ def listen(s, my_mac):
       if parsed_tcp_header['Source Port'] == 80:
         payload_len = 0
         if parsed_tcp_header["PSH"] == 1:
+          decode_payload = tcp_remian.decode('utf-8')
+          logger.info(f'Received packet with payload\n[payload]\n{decode_payload}')
           payload_len = len(tcp_remian)
         flags = {
           "SYN": parsed_tcp_header["SYN"],
@@ -91,12 +91,12 @@ def listen(s, my_mac):
         }
         seq_num = parsed_tcp_header["Sequence Number"]
         ack_num = parsed_tcp_header["Acknowledgment Number"]
-        return seq_num, ack_num, flags, payload_len
+        return seq_num, ack_num, flags, payload_len, src_addr
   except socket.timeout:
-    print("[-] Timeout")
+    logger.error("[-] Timeout")
     return None, None, None, None
   except Exception as e:
-    print(f"[-] Error during listening/receiving: {e}")
+    logger.error(f"[-] Error during listening/receiving: {e}")
     sys.exit(1)
     
 
@@ -109,7 +109,7 @@ def main():
   try:
     dst_ip = socket.gethostbyname("server-node")
   except socket.gaierror:
-    print('[-] Server not found')
+    logger.error('[-] Server not found')
 
   src_port = 54321
   dst_port = 80
@@ -120,7 +120,7 @@ def main():
     logger.info("[*] Client listener started in the background ")
     
   except PermissionError:
-    print("[-] Error: permission error")
+    logger.error("[-] Error: permission error")
     sys.exit(1)
 
   ctrl_thread = threading.Thread(
@@ -137,7 +137,7 @@ def main():
       continue
     
     # server's seq, server's ack
-    ack_num, seq_num, flags, payload_len = result
+    ack_num, seq_num, flags, payload_len, src_addr = result
 
     if payload_len != 0:
       ack_num += payload_len
@@ -147,19 +147,21 @@ def main():
       ack_num += 1
 
     if flags.get("SYN") == 1 and flags.get("ACK") == 1:
+      logger.info(f"[+] Received SYN-ACK packet from {src_addr}")
       payload = b"GET /normal-page HTTP/1.1\r\n Host: server-node\r\n\r\n"
       ack_packet = create_ack_packet(src_ip, dst_ip, src_port, dst_port, seq_num, ack_num=ack_num, payload=payload)
+      decode_payload = payload.decode('utf-8')
+      logger.info(f"[+] Sent ACK-PSH packet with payload:\n[payload]\n{decode_payload}")
     elif (flags.get("ACK") == 1 and flags.get("FIN") == 1) or (flags.get("ACK") and flags.get("PSH")):
       ack_packet = create_ack_packet(src_ip, dst_ip, src_port, dst_port, seq_num, ack_num=ack_num)
+      logger.info("[+] Sent ACK packet")
     else:
-      logger.info(f"[-] Unknown flag: {flags}")
       continue
 
     try:
       s.sendto(ack_packet, (INTERFACE, 0))
-      logger.info("[+] Sent ACK packet")
     except Exception as e:
-      print(f"[-] Failed to send ACK packet: {e}")
+      logger.error(f"[-] Failed to send ACK packet: {e}")
       sys.exit(1)
       
 

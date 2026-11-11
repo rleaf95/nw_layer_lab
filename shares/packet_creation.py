@@ -18,17 +18,23 @@ def send_broadcast(dest_ip, dest_port=80):
   finally:
     sock.close()
 
-def get_dst_mac(target_ip):
+def get_dst_mac(target_ip, logger=None):
+  if logger:
+    logger.info(f'[+] start to find MAC from ARP table: IP: {target_ip}')
   for attempt in range(3):
     try:
       with open('/proc/net/arp', 'r') as f:
         lines = f.readlines()
         for line in lines[1:]:
           parts = line.split()
+          line_for_log = f'{parts}\n'
           if len(parts) >= 4:
               ip = parts[0]
               mac = parts[3]
               if ip == target_ip and mac != "00:00:00:00:00:00":
+                if logger:
+                  logger.info(f'[+] ARP Table result\n[/proc/net/arp]\n{line_for_log}')
+                  logger.info(f'[+] MAC address of {ip}: {mac}')
                 return bytes.fromhex(mac.replace(':', ''))
     except Exception as e:
       print(f"Failed to read ARP table: {e}. \nSending Broadcast .....")
@@ -48,11 +54,10 @@ def get_my_mac(interface="eth0"):
   except Exception as e:
     print(f"Failed to get my MAC/ file name: {interface}:{e}")
 
-def creat_eth_header(dst_ip, interface):
+def creat_eth_header(dst_ip, interface, logger=None):
   src_mac = get_my_mac(interface)
-  dst_mac = get_dst_mac(dst_ip)
+  dst_mac = get_dst_mac(dst_ip, logger)
   eth_proto = b'\x08\x00'
-  # print(f'dst_mac{dst_mac} + src_mac{src_mac}')
   return dst_mac + src_mac + eth_proto
 
 def create_ip_header(src_ip, dst_ip, payload=None):
