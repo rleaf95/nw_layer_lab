@@ -1,311 +1,146 @@
-[2026-11-09 11:48:44] 
+[2026-11-11 09:09:21] 
   --- Ethernet Header ---
-    Destination: 5e:de:d9:a4:fd:6c, Source: 1e:eb:70:f0:d8:86, Protocol: 0x800
+    Destination: 3e:5d:19:46:32:15, Source: 1a:08:c5:18:6b:a4, Protocol: 0x800
   --- IP / Network Header ---
-    Version: 4  IHL: 5  Total length: 40  TTL: 64  Protocol: 6  Checksum: 3700  Source IP: 172.18.0.2  Destination IP: 172.18.0.4
+    Version: 4  IHL: 5  Total length: 40  TTL: 64  Protocol: 6  Checksum: 3701  Source IP: 172.18.0.3  Destination IP: 172.18.0.2
   --- Transport Header / Details ---
-    Source Port: 54321  Destination Port: 80  Sequence Number: 1000  Acknowledgment Number: 0  SYN: 1  ACK: 0  FIN: 0  RST: 0  URG: 0  PSH: 0  Window Size: 53270  Checksum: 44855
+    Source Port: 54321  Destination Port: 80  Sequence Number: 1000  Acknowledgment Number: 0  SYN: 1  ACK: 0  FIN: 0  RST: 0  URG: 0  PSH: 0  Window Size: 53270  Checksum: 44856
   --- Payload (Length: 0 bytes) ---
-    Readable Text: 
+  
 --------------------------------------------------
-[2026-11-09 11:48:44] 
+[2026-11-11 09:09:21] 
   --- Ethernet Header ---
-    Destination: 1e:eb:70:f0:d8:86, Source: 5e:de:d9:a4:fd:6c, Protocol: 0x800
+    Destination: 1a:08:c5:18:6b:a4, Source: 3e:5d:19:46:32:15, Protocol: 0x800
   --- IP / Network Header ---
-    Version: 4  IHL: 5  Total length: 40  TTL: 64  Protocol: 6  Checksum: 8869  Source IP: 172.18.0.4  Destination IP: 172.18.0.2
+    Version: 4  IHL: 5  Total length: 40  TTL: 64  Protocol: 6  Checksum: 8870  Source IP: 172.18.0.2  Destination IP: 172.18.0.3
   --- Transport Header / Details ---
-    Source Port: 80  Destination Port: 54321  Sequence Number: 1000  Acknowledgment Number: 1001  SYN: 1  ACK: 1  FIN: 0  RST: 0  URG: 0  PSH: 0  Window Size: 64240  Checksum: 32868
+    Source Port: 80  Destination Port: 54321  Sequence Number: 1000  Acknowledgment Number: 1001  SYN: 1  ACK: 1  FIN: 0  RST: 0  URG: 0  PSH: 0  Window Size: 64240  Checksum: 32869
   --- Payload (Length: 0 bytes) ---
-    Readable Text: 
+  
 --------------------------------------------------
-[2026-11-09 11:48:44] 
+[2026-11-11 09:09:21] 
   --- Ethernet Header ---
-    Destination: 5e:de:d9:a4:fd:6c, Source: 1e:eb:70:f0:d8:86, Protocol: 0x800
+    Destination: 3e:5d:19:46:32:15, Source: 1a:08:c5:18:6b:a4, Protocol: 0x800
   --- IP / Network Header ---
-    Version: 4  IHL: 5  Total length: 40  TTL: 64  Protocol: 6  Checksum: 3700  Source IP: 172.18.0.2  Destination IP: 172.18.0.4
+    Version: 4  IHL: 5  Total length: 89  TTL: 64  Protocol: 6  Checksum: 3652  Source IP: 172.18.0.3  Destination IP: 172.18.0.2
   --- Transport Header / Details ---
-    Source Port: 54321  Destination Port: 80  Sequence Number: 1001  Acknowledgment Number: 1001  SYN: 0  ACK: 1  FIN: 0  RST: 0  URG: 0  PSH: 0  Window Size: 53270  Checksum: 43839
+    Source Port: 54321  Destination Port: 80  Sequence Number: 1001  Acknowledgment Number: 1001  SYN: 0  ACK: 1  FIN: 0  RST: 0  URG: 0  PSH: 1  Window Size: 53270  Checksum: 14085
+  --- Payload (Length: 49 bytes) ---
+  GET /normal-page HTTP/1.1
+ Host: server-node
+--------------------------------------------------
+[2026-11-11 09:09:21] 
+  --- Ethernet Header ---
+    Destination: c6:61:91:86:58:98, Source: 3e:5d:19:46:32:15, Protocol: 0x800
+  --- IP / Network Header ---
+    Version: 4  IHL: 5  Total length: 60  TTL: 64  Protocol: 6  Checksum: 21975  Source IP: 172.18.0.4  Destination IP: 172.18.0.2
+  --- Transport Header / Details ---
+    Source Port: 42766  Destination Port: 80  Sequence Number: 1186837094  Acknowledgment Number: 0  SYN: 1  ACK: 0  FIN: 0  RST: 0  URG: 0  PSH: 0  Window Size: 64240  Checksum: 22617
   --- Payload (Length: 0 bytes) ---
-    Readable Text: 
+  
 --------------------------------------------------
-[2026-11-09 11:48:44] 
+[2026-11-11 09:09:21] 
   --- Ethernet Header ---
-    Destination: 66:4b:ea:5b:25:f6, Source: 5e:de:d9:a4:fd:6c, Protocol: 0x800
+    Destination: 3e:5d:19:46:32:15, Source: c6:61:91:86:58:98, Protocol: 0x800
   --- IP / Network Header ---
-    Version: 4  IHL: 5  Total length: 60  TTL: 64  Protocol: 6  Checksum: 49360  Source IP: 172.18.0.3  Destination IP: 172.18.0.4
+    Version: 4  IHL: 5  Total length: 60  TTL: 64  Protocol: 6  Checksum: 58001  Source IP: 172.18.0.2  Destination IP: 172.18.0.4
   --- Transport Header / Details ---
-    Source Port: 50424  Destination Port: 80  Sequence Number: 4031301382  Acknowledgment Number: 0  SYN: 1  ACK: 0  FIN: 0  RST: 0  URG: 0  PSH: 0  Window Size: 64240  Checksum: 22618
+    Source Port: 80  Destination Port: 42766  Sequence Number: 1885283082  Acknowledgment Number: 1186837095  SYN: 1  ACK: 1  FIN: 0  RST: 0  URG: 0  PSH: 0  Window Size: 65160  Checksum: 22617
   --- Payload (Length: 0 bytes) ---
-    Readable Text: 
+  
 --------------------------------------------------
-[2026-11-09 11:48:44] 
+[2026-11-11 09:09:21] 
   --- Ethernet Header ---
-    Destination: 5e:de:d9:a4:fd:6c, Source: 66:4b:ea:5b:25:f6, Protocol: 0x800
+    Destination: c6:61:91:86:58:98, Source: 3e:5d:19:46:32:15, Protocol: 0x800
   --- IP / Network Header ---
-    Version: 4  IHL: 5  Total length: 60  TTL: 64  Protocol: 6  Checksum: 58000  Source IP: 172.18.0.4  Destination IP: 172.18.0.3
+    Version: 4  IHL: 5  Total length: 52  TTL: 64  Protocol: 6  Checksum: 21982  Source IP: 172.18.0.4  Destination IP: 172.18.0.2
   --- Transport Header / Details ---
-    Source Port: 80  Destination Port: 50424  Sequence Number: 2287754009  Acknowledgment Number: 4031301383  SYN: 1  ACK: 1  FIN: 0  RST: 0  URG: 0  PSH: 0  Window Size: 65160  Checksum: 22618
+    Source Port: 42766  Destination Port: 80  Sequence Number: 1186837095  Acknowledgment Number: 1885283083  SYN: 0  ACK: 1  FIN: 0  RST: 0  URG: 0  PSH: 0  Window Size: 63  Checksum: 22609
   --- Payload (Length: 0 bytes) ---
-    Readable Text: 
+  
 --------------------------------------------------
-[2026-11-09 11:48:44] 
+[2026-11-11 09:09:21] 
   --- Ethernet Header ---
-    Destination: 66:4b:ea:5b:25:f6, Source: 5e:de:d9:a4:fd:6c, Protocol: 0x800
+    Destination: c6:61:91:86:58:98, Source: 3e:5d:19:46:32:15, Protocol: 0x800
   --- IP / Network Header ---
-    Version: 4  IHL: 5  Total length: 52  TTL: 64  Protocol: 6  Checksum: 49367  Source IP: 172.18.0.3  Destination IP: 172.18.0.4
+    Version: 4  IHL: 5  Total length: 104  TTL: 64  Protocol: 6  Checksum: 21929  Source IP: 172.18.0.4  Destination IP: 172.18.0.2
   --- Transport Header / Details ---
-    Source Port: 50424  Destination Port: 80  Sequence Number: 4031301383  Acknowledgment Number: 2287754010  SYN: 0  ACK: 1  FIN: 0  RST: 0  URG: 0  PSH: 0  Window Size: 63  Checksum: 22610
+    Source Port: 42766  Destination Port: 80  Sequence Number: 1186837095  Acknowledgment Number: 1885283083  SYN: 0  ACK: 1  FIN: 0  RST: 0  URG: 0  PSH: 1  Window Size: 63  Checksum: 22661
+  --- Payload (Length: 52 bytes) ---
+  GET /malicious-page HTTP/1.1
+ Host: server-node
+--------------------------------------------------
+[2026-11-11 09:09:21] 
+  --- Ethernet Header ---
+    Destination: 3e:5d:19:46:32:15, Source: c6:61:91:86:58:98, Protocol: 0x800
+  --- IP / Network Header ---
+    Version: 4  IHL: 5  Total length: 52  TTL: 64  Protocol: 6  Checksum: 13021  Source IP: 172.18.0.2  Destination IP: 172.18.0.4
+  --- Transport Header / Details ---
+    Source Port: 80  Destination Port: 42766  Sequence Number: 1885283083  Acknowledgment Number: 1186837147  SYN: 0  ACK: 1  FIN: 0  RST: 0  URG: 0  PSH: 0  Window Size: 64  Checksum: 22609
   --- Payload (Length: 0 bytes) ---
-    Readable Text: 
+  
 --------------------------------------------------
-[2026-11-09 11:48:44] 
+[2026-11-11 09:09:21] 
   --- Ethernet Header ---
-    Destination: 66:4b:ea:5b:25:f6, Source: 5e:de:d9:a4:fd:6c, Protocol: 0x800
+    Destination: 3e:5d:19:46:32:15, Source: c6:61:91:86:58:98, Protocol: 0x800
   --- IP / Network Header ---
-    Version: 4  IHL: 5  Total length: 52  TTL: 64  Protocol: 6  Checksum: 49366  Source IP: 172.18.0.3  Destination IP: 172.18.0.4
+    Version: 4  IHL: 5  Total length: 126  TTL: 64  Protocol: 6  Checksum: 12946  Source IP: 172.18.0.2  Destination IP: 172.18.0.4
   --- Transport Header / Details ---
-    Source Port: 50424  Destination Port: 80  Sequence Number: 4031301383  Acknowledgment Number: 2287754010  SYN: 0  ACK: 1  FIN: 1  RST: 0  URG: 0  PSH: 0  Window Size: 63  Checksum: 22610
+    Source Port: 80  Destination Port: 42766  Sequence Number: 1885283083  Acknowledgment Number: 1186837147  SYN: 0  ACK: 1  FIN: 0  RST: 0  URG: 0  PSH: 1  Window Size: 64  Checksum: 22683
+  --- Payload (Length: 74 bytes) ---
+  HTTP/1.1 302 Found
+Location: http://malicious.com/
+Content-Length: 0
+--------------------------------------------------
+[2026-11-11 09:09:21] 
+  --- Ethernet Header ---
+    Destination: c6:61:91:86:58:98, Source: 3e:5d:19:46:32:15, Protocol: 0x800
+  --- IP / Network Header ---
+    Version: 4  IHL: 5  Total length: 52  TTL: 64  Protocol: 6  Checksum: 21980  Source IP: 172.18.0.4  Destination IP: 172.18.0.2
+  --- Transport Header / Details ---
+    Source Port: 42766  Destination Port: 80  Sequence Number: 1186837147  Acknowledgment Number: 1885283157  SYN: 0  ACK: 1  FIN: 0  RST: 0  URG: 0  PSH: 0  Window Size: 63  Checksum: 22609
   --- Payload (Length: 0 bytes) ---
-    Readable Text: 
+  
 --------------------------------------------------
-[2026-11-09 11:48:44] 
+[2026-11-11 09:09:21] 
   --- Ethernet Header ---
-    Destination: 5e:de:d9:a4:fd:6c, Source: 66:4b:ea:5b:25:f6, Protocol: 0x800
+    Destination: 3e:5d:19:46:32:15, Source: c6:61:91:86:58:98, Protocol: 0x800
   --- IP / Network Header ---
-    Version: 4  IHL: 5  Total length: 52  TTL: 64  Protocol: 6  Checksum: 46955  Source IP: 172.18.0.4  Destination IP: 172.18.0.3
+    Version: 4  IHL: 5  Total length: 52  TTL: 64  Protocol: 6  Checksum: 13019  Source IP: 172.18.0.2  Destination IP: 172.18.0.4
   --- Transport Header / Details ---
-    Source Port: 80  Destination Port: 50424  Sequence Number: 2287754010  Acknowledgment Number: 4031301384  SYN: 0  ACK: 1  FIN: 1  RST: 0  URG: 0  PSH: 0  Window Size: 64  Checksum: 22610
+    Source Port: 80  Destination Port: 42766  Sequence Number: 1885283157  Acknowledgment Number: 1186837147  SYN: 0  ACK: 1  FIN: 1  RST: 0  URG: 0  PSH: 0  Window Size: 64  Checksum: 22609
   --- Payload (Length: 0 bytes) ---
-    Readable Text: 
+  
 --------------------------------------------------
-[2026-11-09 11:48:44] 
+[2026-11-11 09:09:21] 
   --- Ethernet Header ---
-    Destination: 66:4b:ea:5b:25:f6, Source: 5e:de:d9:a4:fd:6c, Protocol: 0x800
+    Destination: c6:61:91:86:58:98, Source: 3e:5d:19:46:32:15, Protocol: 0x800
   --- IP / Network Header ---
-    Version: 4  IHL: 5  Total length: 52  TTL: 64  Protocol: 6  Checksum: 49365  Source IP: 172.18.0.3  Destination IP: 172.18.0.4
+    Version: 4  IHL: 5  Total length: 52  TTL: 64  Protocol: 6  Checksum: 21979  Source IP: 172.18.0.4  Destination IP: 172.18.0.2
   --- Transport Header / Details ---
-    Source Port: 50424  Destination Port: 80  Sequence Number: 4031301384  Acknowledgment Number: 2287754011  SYN: 0  ACK: 1  FIN: 0  RST: 0  URG: 0  PSH: 0  Window Size: 63  Checksum: 22610
+    Source Port: 42766  Destination Port: 80  Sequence Number: 1186837147  Acknowledgment Number: 1885283158  SYN: 0  ACK: 1  FIN: 0  RST: 0  URG: 0  PSH: 0  Window Size: 63  Checksum: 22609
   --- Payload (Length: 0 bytes) ---
-    Readable Text: 
+  
 --------------------------------------------------
-[2026-11-09 11:48:44] 
+[2026-11-11 09:09:21] 
   --- Ethernet Header ---
-    Destination: 66:4b:ea:5b:25:f6, Source: 5e:de:d9:a4:fd:6c, Protocol: 0x800
+    Destination: 1a:08:c5:18:6b:a4, Source: 3e:5d:19:46:32:15, Protocol: 0x800
   --- IP / Network Header ---
-    Version: 4  IHL: 5  Total length: 40  TTL: 64  Protocol: 6  Checksum: 8868  Source IP: 172.18.0.3  Destination IP: 172.18.0.4
+    Version: 4  IHL: 5  Total length: 114  TTL: 64  Protocol: 6  Checksum: 8796  Source IP: 172.18.0.2  Destination IP: 172.18.0.3
   --- Transport Header / Details ---
-    Source Port: 50424  Destination Port: 80  Sequence Number: 1000  Acknowledgment Number: 2287754010  SYN: 1  ACK: 1  FIN: 0  RST: 0  URG: 0  PSH: 0  Window Size: 64240  Checksum: 45070
+    Source Port: 80  Destination Port: 54321  Sequence Number: 0  Acknowledgment Number: 0  SYN: 0  ACK: 1  FIN: 0  RST: 0  URG: 0  PSH: 1  Window Size: 8192  Checksum: 35117
+  --- Payload (Length: 74 bytes) ---
+  HTTP/1.1 302 Found
+Location: http://malicious.com/
+Content-Length: 0
+--------------------------------------------------
+[2026-11-11 09:09:21] 
+  --- Ethernet Header ---
+    Destination: 3e:5d:19:46:32:15, Source: 1a:08:c5:18:6b:a4, Protocol: 0x800
+  --- IP / Network Header ---
+    Version: 4  IHL: 5  Total length: 40  TTL: 64  Protocol: 6  Checksum: 3701  Source IP: 172.18.0.3  Destination IP: 172.18.0.2
+  --- Transport Header / Details ---
+    Source Port: 54321  Destination Port: 80  Sequence Number: 0  Acknowledgment Number: 74  SYN: 0  ACK: 1  FIN: 0  RST: 0  URG: 0  PSH: 0  Window Size: 53270  Checksum: 45768
   --- Payload (Length: 0 bytes) ---
-    Readable Text: 
---------------------------------------------------
-[2026-11-09 11:48:44] 
-  --- Ethernet Header ---
-    Destination: 5e:de:d9:a4:fd:6c, Source: 66:4b:ea:5b:25:f6, Protocol: 0x800
-  --- IP / Network Header ---
-    Version: 4  IHL: 5  Total length: 40  TTL: 64  Protocol: 6  Checksum: 58020  Source IP: 172.18.0.4  Destination IP: 172.18.0.3
-  --- Transport Header / Details ---
-    Source Port: 80  Destination Port: 50424  Sequence Number: 2287754010  Acknowledgment Number: 0  SYN: 0  ACK: 0  FIN: 0  RST: 1  URG: 0  PSH: 0  Window Size: 0  Checksum: 44789
-  --- Payload (Length: 0 bytes) ---
-    Readable Text: 
---------------------------------------------------
-[2026-11-09 11:58:51] 
-  --- Ethernet Header ---
-    Destination: 5e:de:d9:a4:fd:6c, Source: 1e:eb:70:f0:d8:86, Protocol: 0x800
-  --- IP / Network Header ---
-    Version: 4  IHL: 5  Total length: 40  TTL: 64  Protocol: 6  Checksum: 3700  Source IP: 172.18.0.2  Destination IP: 172.18.0.4
-  --- Transport Header / Details ---
-    Source Port: 54321  Destination Port: 80  Sequence Number: 1000  Acknowledgment Number: 0  SYN: 1  ACK: 0  FIN: 0  RST: 0  URG: 0  PSH: 0  Window Size: 53270  Checksum: 44855
-  --- Payload (Length: 0 bytes) ---
-    Readable Text: 
---------------------------------------------------
-[2026-11-09 11:58:51] 
-  --- Ethernet Header ---
-    Destination: 1e:eb:70:f0:d8:86, Source: 5e:de:d9:a4:fd:6c, Protocol: 0x800
-  --- IP / Network Header ---
-    Version: 4  IHL: 5  Total length: 40  TTL: 64  Protocol: 6  Checksum: 8869  Source IP: 172.18.0.4  Destination IP: 172.18.0.2
-  --- Transport Header / Details ---
-    Source Port: 80  Destination Port: 54321  Sequence Number: 1000  Acknowledgment Number: 1001  SYN: 1  ACK: 1  FIN: 0  RST: 0  URG: 0  PSH: 0  Window Size: 64240  Checksum: 32868
-  --- Payload (Length: 0 bytes) ---
-    Readable Text: 
---------------------------------------------------
-[2026-11-09 11:58:51] 
-  --- Ethernet Header ---
-    Destination: 5e:de:d9:a4:fd:6c, Source: 1e:eb:70:f0:d8:86, Protocol: 0x800
-  --- IP / Network Header ---
-    Version: 4  IHL: 5  Total length: 40  TTL: 64  Protocol: 6  Checksum: 3700  Source IP: 172.18.0.2  Destination IP: 172.18.0.4
-  --- Transport Header / Details ---
-    Source Port: 54321  Destination Port: 80  Sequence Number: 1001  Acknowledgment Number: 1001  SYN: 0  ACK: 1  FIN: 0  RST: 0  URG: 0  PSH: 0  Window Size: 53270  Checksum: 43839
-  --- Payload (Length: 0 bytes) ---
-    Readable Text: 
---------------------------------------------------
-[2026-11-09 11:58:51] 
-  --- Ethernet Header ---
-    Destination: 66:4b:ea:5b:25:f6, Source: 5e:de:d9:a4:fd:6c, Protocol: 0x800
-  --- IP / Network Header ---
-    Version: 4  IHL: 5  Total length: 60  TTL: 64  Protocol: 6  Checksum: 61210  Source IP: 172.18.0.3  Destination IP: 172.18.0.4
-  --- Transport Header / Details ---
-    Source Port: 54526  Destination Port: 80  Sequence Number: 3481930831  Acknowledgment Number: 0  SYN: 1  ACK: 0  FIN: 0  RST: 0  URG: 0  PSH: 0  Window Size: 64240  Checksum: 22618
-  --- Payload (Length: 0 bytes) ---
-    Readable Text: 
---------------------------------------------------
-[2026-11-09 11:58:51] 
-  --- Ethernet Header ---
-    Destination: 5e:de:d9:a4:fd:6c, Source: 66:4b:ea:5b:25:f6, Protocol: 0x800
-  --- IP / Network Header ---
-    Version: 4  IHL: 5  Total length: 60  TTL: 64  Protocol: 6  Checksum: 58000  Source IP: 172.18.0.4  Destination IP: 172.18.0.3
-  --- Transport Header / Details ---
-    Source Port: 80  Destination Port: 54526  Sequence Number: 1840745482  Acknowledgment Number: 3481930832  SYN: 1  ACK: 1  FIN: 0  RST: 0  URG: 0  PSH: 0  Window Size: 65160  Checksum: 22618
-  --- Payload (Length: 0 bytes) ---
-    Readable Text: 
---------------------------------------------------
-[2026-11-09 11:58:51] 
-  --- Ethernet Header ---
-    Destination: 66:4b:ea:5b:25:f6, Source: 5e:de:d9:a4:fd:6c, Protocol: 0x800
-  --- IP / Network Header ---
-    Version: 4  IHL: 5  Total length: 52  TTL: 64  Protocol: 6  Checksum: 61217  Source IP: 172.18.0.3  Destination IP: 172.18.0.4
-  --- Transport Header / Details ---
-    Source Port: 54526  Destination Port: 80  Sequence Number: 3481930832  Acknowledgment Number: 1840745483  SYN: 0  ACK: 1  FIN: 0  RST: 0  URG: 0  PSH: 0  Window Size: 63  Checksum: 22610
-  --- Payload (Length: 0 bytes) ---
-    Readable Text: 
---------------------------------------------------
-[2026-11-09 11:58:51] 
-  --- Ethernet Header ---
-    Destination: 66:4b:ea:5b:25:f6, Source: 5e:de:d9:a4:fd:6c, Protocol: 0x800
-  --- IP / Network Header ---
-    Version: 4  IHL: 5  Total length: 40  TTL: 64  Protocol: 6  Checksum: 8868  Source IP: 172.18.0.3  Destination IP: 172.18.0.4
-  --- Transport Header / Details ---
-    Source Port: 54526  Destination Port: 80  Sequence Number: 1000  Acknowledgment Number: 1840745483  SYN: 1  ACK: 1  FIN: 0  RST: 0  URG: 0  PSH: 0  Window Size: 64240  Checksum: 35260
-  --- Payload (Length: 0 bytes) ---
-    Readable Text: 
---------------------------------------------------
-[2026-11-09 11:58:51] 
-  --- Ethernet Header ---
-    Destination: 5e:de:d9:a4:fd:6c, Source: 66:4b:ea:5b:25:f6, Protocol: 0x800
-  --- IP / Network Header ---
-    Version: 4  IHL: 5  Total length: 52  TTL: 64  Protocol: 6  Checksum: 32008  Source IP: 172.18.0.4  Destination IP: 172.18.0.3
-  --- Transport Header / Details ---
-    Source Port: 80  Destination Port: 54526  Sequence Number: 1840745483  Acknowledgment Number: 3481930832  SYN: 0  ACK: 1  FIN: 0  RST: 0  URG: 0  PSH: 0  Window Size: 64  Checksum: 22610
-  --- Payload (Length: 0 bytes) ---
-    Readable Text: 
---------------------------------------------------
-[2026-11-09 11:59:01] 
-  --- Ethernet Header ---
-    Destination: 5e:de:d9:a4:fd:6c, Source: 66:4b:ea:5b:25:f6, Protocol: 0x800
-  --- IP / Network Header ---
-    Version: 4  IHL: 5  Total length: 52  TTL: 64  Protocol: 6  Checksum: 32007  Source IP: 172.18.0.4  Destination IP: 172.18.0.3
-  --- Transport Header / Details ---
-    Source Port: 80  Destination Port: 54526  Sequence Number: 1840745483  Acknowledgment Number: 3481930832  SYN: 0  ACK: 1  FIN: 1  RST: 0  URG: 0  PSH: 0  Window Size: 64  Checksum: 22610
-  --- Payload (Length: 0 bytes) ---
-    Readable Text: 
---------------------------------------------------
-[2026-11-09 11:59:01] 
-  --- Ethernet Header ---
-    Destination: 66:4b:ea:5b:25:f6, Source: 5e:de:d9:a4:fd:6c, Protocol: 0x800
-  --- IP / Network Header ---
-    Version: 4  IHL: 5  Total length: 52  TTL: 64  Protocol: 6  Checksum: 61216  Source IP: 172.18.0.3  Destination IP: 172.18.0.4
-  --- Transport Header / Details ---
-    Source Port: 54526  Destination Port: 80  Sequence Number: 3481930832  Acknowledgment Number: 1840745484  SYN: 0  ACK: 1  FIN: 0  RST: 0  URG: 0  PSH: 0  Window Size: 63  Checksum: 22610
-  --- Payload (Length: 0 bytes) ---
-    Readable Text: 
---------------------------------------------------
-[2026-11-09 12:44:51] 
-  --- Ethernet Header ---
-    Destination: 5e:de:d9:a4:fd:6c, Source: 1e:eb:70:f0:d8:86, Protocol: 0x800
-  --- IP / Network Header ---
-    Version: 4  IHL: 5  Total length: 40  TTL: 64  Protocol: 6  Checksum: 3700  Source IP: 172.18.0.2  Destination IP: 172.18.0.4
-  --- Transport Header / Details ---
-    Source Port: 54321  Destination Port: 80  Sequence Number: 1000  Acknowledgment Number: 0  SYN: 1  ACK: 0  FIN: 0  RST: 0  URG: 0  PSH: 0  Window Size: 53270  Checksum: 44855
-  --- Payload (Length: 0 bytes) ---
-    Readable Text: 
---------------------------------------------------
-[2026-11-09 12:44:51] 
-  --- Ethernet Header ---
-    Destination: 1e:eb:70:f0:d8:86, Source: 5e:de:d9:a4:fd:6c, Protocol: 0x800
-  --- IP / Network Header ---
-    Version: 4  IHL: 5  Total length: 40  TTL: 64  Protocol: 6  Checksum: 8869  Source IP: 172.18.0.4  Destination IP: 172.18.0.2
-  --- Transport Header / Details ---
-    Source Port: 80  Destination Port: 54321  Sequence Number: 1000  Acknowledgment Number: 1001  SYN: 1  ACK: 1  FIN: 0  RST: 0  URG: 0  PSH: 0  Window Size: 64240  Checksum: 32868
-  --- Payload (Length: 0 bytes) ---
-    Readable Text: 
---------------------------------------------------
-[2026-11-09 12:44:51] 
-  --- Ethernet Header ---
-    Destination: 5e:de:d9:a4:fd:6c, Source: 1e:eb:70:f0:d8:86, Protocol: 0x800
-  --- IP / Network Header ---
-    Version: 4  IHL: 5  Total length: 88  TTL: 64  Protocol: 6  Checksum: 3652  Source IP: 172.18.0.2  Destination IP: 172.18.0.4
-  --- Transport Header / Details ---
-    Source Port: 54321  Destination Port: 80  Sequence Number: 1001  Acknowledgment Number: 1001  SYN: 0  ACK: 1  FIN: 0  RST: 0  URG: 0  PSH: 0  Window Size: 53270  Checksum: 43831
-  --- Payload (Length: 48 bytes) ---
-    Readable Text: GET /normal-page HTTP/1.1
-Host: server-node
---------------------------------------------------
-[2026-11-09 12:44:51] 
-  --- Ethernet Header ---
-    Destination: 66:4b:ea:5b:25:f6, Source: 5e:de:d9:a4:fd:6c, Protocol: 0x800
-  --- IP / Network Header ---
-    Version: 4  IHL: 5  Total length: 60  TTL: 64  Protocol: 6  Checksum: 11083  Source IP: 172.18.0.3  Destination IP: 172.18.0.4
-  --- Transport Header / Details ---
-    Source Port: 36714  Destination Port: 80  Sequence Number: 1006776391  Acknowledgment Number: 0  SYN: 1  ACK: 0  FIN: 0  RST: 0  URG: 0  PSH: 0  Window Size: 64240  Checksum: 22618
-  --- Payload (Length: 0 bytes) ---
-    Readable Text: 
---------------------------------------------------
-[2026-11-09 12:44:51] 
-  --- Ethernet Header ---
-    Destination: 5e:de:d9:a4:fd:6c, Source: 66:4b:ea:5b:25:f6, Protocol: 0x800
-  --- IP / Network Header ---
-    Version: 4  IHL: 5  Total length: 60  TTL: 64  Protocol: 6  Checksum: 58000  Source IP: 172.18.0.4  Destination IP: 172.18.0.3
-  --- Transport Header / Details ---
-    Source Port: 80  Destination Port: 36714  Sequence Number: 2343408296  Acknowledgment Number: 1006776392  SYN: 1  ACK: 1  FIN: 0  RST: 0  URG: 0  PSH: 0  Window Size: 65160  Checksum: 22618
-  --- Payload (Length: 0 bytes) ---
-    Readable Text: 
---------------------------------------------------
-[2026-11-09 12:44:51] 
-  --- Ethernet Header ---
-    Destination: 66:4b:ea:5b:25:f6, Source: 5e:de:d9:a4:fd:6c, Protocol: 0x800
-  --- IP / Network Header ---
-    Version: 4  IHL: 5  Total length: 52  TTL: 64  Protocol: 6  Checksum: 11090  Source IP: 172.18.0.3  Destination IP: 172.18.0.4
-  --- Transport Header / Details ---
-    Source Port: 36714  Destination Port: 80  Sequence Number: 1006776392  Acknowledgment Number: 2343408297  SYN: 0  ACK: 1  FIN: 0  RST: 0  URG: 0  PSH: 0  Window Size: 63  Checksum: 22610
-  --- Payload (Length: 0 bytes) ---
-    Readable Text: 
---------------------------------------------------
-[2026-11-09 12:44:51] 
-  --- Ethernet Header ---
-    Destination: 66:4b:ea:5b:25:f6, Source: 5e:de:d9:a4:fd:6c, Protocol: 0x800
-  --- IP / Network Header ---
-    Version: 4  IHL: 5  Total length: 40  TTL: 64  Protocol: 6  Checksum: 8868  Source IP: 172.18.0.3  Destination IP: 172.18.0.4
-  --- Transport Header / Details ---
-    Source Port: 36714  Destination Port: 80  Sequence Number: 1000  Acknowledgment Number: 2343408297  SYN: 1  ACK: 1  FIN: 0  RST: 0  URG: 0  PSH: 0  Window Size: 64240  Checksum: 43708
-  --- Payload (Length: 0 bytes) ---
-    Readable Text: 
---------------------------------------------------
-[2026-11-09 12:44:51] 
-  --- Ethernet Header ---
-    Destination: 5e:de:d9:a4:fd:6c, Source: 66:4b:ea:5b:25:f6, Protocol: 0x800
-  --- IP / Network Header ---
-    Version: 4  IHL: 5  Total length: 52  TTL: 64  Protocol: 6  Checksum: 36712  Source IP: 172.18.0.4  Destination IP: 172.18.0.3
-  --- Transport Header / Details ---
-    Source Port: 80  Destination Port: 36714  Sequence Number: 2343408297  Acknowledgment Number: 1006776392  SYN: 0  ACK: 1  FIN: 0  RST: 0  URG: 0  PSH: 0  Window Size: 64  Checksum: 22610
-  --- Payload (Length: 0 bytes) ---
-    Readable Text: 
---------------------------------------------------
-[2026-11-09 12:45:01] 
-  --- Ethernet Header ---
-    Destination: 5e:de:d9:a4:fd:6c, Source: 66:4b:ea:5b:25:f6, Protocol: 0x800
-  --- IP / Network Header ---
-    Version: 4  IHL: 5  Total length: 52  TTL: 64  Protocol: 6  Checksum: 36711  Source IP: 172.18.0.4  Destination IP: 172.18.0.3
-  --- Transport Header / Details ---
-    Source Port: 80  Destination Port: 36714  Sequence Number: 2343408297  Acknowledgment Number: 1006776392  SYN: 0  ACK: 1  FIN: 1  RST: 0  URG: 0  PSH: 0  Window Size: 64  Checksum: 22610
-  --- Payload (Length: 0 bytes) ---
-    Readable Text: 
---------------------------------------------------
-[2026-11-09 12:45:01] 
-  --- Ethernet Header ---
-    Destination: 66:4b:ea:5b:25:f6, Source: 5e:de:d9:a4:fd:6c, Protocol: 0x800
-  --- IP / Network Header ---
-    Version: 4  IHL: 5  Total length: 52  TTL: 64  Protocol: 6  Checksum: 11089  Source IP: 172.18.0.3  Destination IP: 172.18.0.4
-  --- Transport Header / Details ---
-    Source Port: 36714  Destination Port: 80  Sequence Number: 1006776392  Acknowledgment Number: 2343408298  SYN: 0  ACK: 1  FIN: 0  RST: 0  URG: 0  PSH: 0  Window Size: 63  Checksum: 22610
-  --- Payload (Length: 0 bytes) ---
-    Readable Text: 
+  
 --------------------------------------------------
