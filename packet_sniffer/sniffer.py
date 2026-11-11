@@ -1,6 +1,10 @@
 import socket, struct, datetime
-from packet_sniffer.proxy import handle_syn_ack, connect_to_server
+from packet_sniffer.proxy import *
 from shares.packet_dissection import *
+from shares.packet_creation import get_dst_mac
+
+
+socket_to_client = {}
 
 def log_packet(message, is_tcp):
   timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -12,7 +16,7 @@ def log_packet(message, is_tcp):
       f.write(log_line)
 
 
-def run_packet_sniffer(interface, my_mac):
+def run_packet_sniffer(interface, my_mac, ip_dist):
   my_ip = socket.gethostbyname('sniffer-node')
   try:
     raw_socket = socket.socket(socket.AF_PACKET, socket.SOCK_RAW, socket.ntohs(3))
@@ -45,14 +49,30 @@ def run_packet_sniffer(interface, my_mac):
       elif proto_num == 6:  # TCP
         transport_info, transport_payload = parse_tcp_header(remaining_packet)
         is_tcp = True
-        if transport_info['SYN'] == 1 and dest_addr == my_mac:
-          handle_syn_ack(src_addr, dest_addr, ip_info, transport_info, interface)
-          if ip_info['Destination IP'] != my_ip:
+
+        if ip_info['Destination IP'] != my_ip and dest_addr == my_mac:
+          if transport_info['SYN'] == 1 and transport_info['ACK'] == 0:
+            ip_dist = handle_syn_ack(src_addr, dest_addr, ip_info, transport_info, interface, ip_dist)
             server_ip = ip_info['Destination IP']
             server_port = transport_info['Destination Port']
-            active_server_socket = connect_to_server(server_ip, server_port)
-            print(f'[+] Connection established server - sniffer: {active_server_socket}')
-      elif proto_num == 17: # UDP
+            ip_dist = connect_to_server(server_ip, server_port, ip_dist)
+            socket_to_client[server_port] = ip_info['Source IP']
+          elif transport_info['PSH']:
+            dst_ip = ip_info["Destination IP"]
+            dst_mac = ip_dist[dst_ip]['mac']
+            target_socket = ip_dist[dst_ip]['socket']
+            if target_socket != None:
+              handle_transfer_packet(interface, dst_ip, dst_mac, target_socket, transport_payload)
+            else:
+              print(f'[-] Socket for {dst_ip} is unknown' )
+        elif ip_info['Destination IP'] == my_ip and transport_info['PSH']:
+          source_port = transport_info['Source Port'] 
+          dst_ip = socket_to_client[source_port]
+          src_ip = ip_info['Source IP']
+          dst_mac = ip_dist[dst_ip]['mac']
+          target_socket = ip_dist[dst_ip]['socket']
+          handle_transfer_packet(interface, dst_ip, dst_mac, target_socket, transport_payload, is_client=True, src_port=source_port, ip=src_ip)
+      elif proto_num == 17:
         transport_info, transport_payload = udp_header(remaining_packet)
       else:
         transport_info = {"Info": f"Other IP Protocol: {proto_num}"}

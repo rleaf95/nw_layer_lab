@@ -1,6 +1,5 @@
 import socket,  struct, time
 
-
 def get_checksum(psh):
   s = 0
   for i in range(0, len(psh), 2):
@@ -56,7 +55,7 @@ def creat_eth_header(dst_ip, interface):
   # print(f'dst_mac{dst_mac} + src_mac{src_mac}')
   return dst_mac + src_mac + eth_proto
 
-def create_ip_header(src_ip, dst_ip, payload=False):
+def create_ip_header(src_ip, dst_ip, payload=None):
   version = 4
   ihl = 5
   tos = 0
@@ -104,15 +103,16 @@ def create_tcp_header(src_port, dst_port, seq_num, ack_num, tcp_check=False, ack
 
   return tcp_header
 
-def create_tcp_check(src_ip, dst_ip, tcp_header_no_cks):
+def create_tcp_check(src_ip, dst_ip, tcp_header_no_cks, payload=False):
 
   source_ip = socket.inet_aton(src_ip) 
   dest_ip = socket.inet_aton(dst_ip)
   placeholder = 0
   protocol = 6
-  tcp_length = len(tcp_header_no_cks)
+  payload_len = len(payload) if payload else 0
+  tcp_length = len(tcp_header_no_cks) + payload_len
   pseudo_header = struct.pack('!4s4sBBH', source_ip, dest_ip, placeholder, protocol, tcp_length)  
-  psh = pseudo_header +  tcp_header_no_cks
+  psh = pseudo_header + tcp_header_no_cks + (payload if payload else b"")
   tcp_check = get_checksum(psh)
   return tcp_check
 
